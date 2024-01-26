@@ -1,0 +1,35 @@
+# Now a Docker Compose file can be used 
+# to orchestrate multiple containers to start up
+# by using docker compose, these containers / services are put on the same
+
+services:
+  pgdatabase:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ny_taxi
+    volumes:
+      - "./ny_taxi_postgres_data:/var/lib/postgresql/data:rwx"
+    ports:
+      - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=root@root.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "8080:80"
+
+  taxi_docker:
+    image: keenanandrew/taxi_docker:latest
+    environment:
+      - DB_HOST=pgdatabase
+      - DB_PORT=5432
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=ny_taxi
+    depends_on:
+      - pgdatabase
+
+  
