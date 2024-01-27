@@ -16,3 +16,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ny_taxi_app:$(date +%s)
+    - name: Push to GHCR
+      uses: GlueOps/github-actions-build-push-containers@main
+
